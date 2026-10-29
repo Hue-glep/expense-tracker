@@ -1,6 +1,6 @@
-# Expense Tracker - Installment 3: The Tracker Does Math
+# Expense Tracker - Installment 4: The Tracker Makes Decisions
 # Author: Sebastian Paul S. Carlos
-# Landing page and two expenses from Installment 2, now with subtotal, tax and budget.
+# Installment 3 plus size messages for each amount and a budget verdict.
 
 print("=" * 40)
 print("\tEXPENSE TRACKER")
@@ -27,10 +27,31 @@ item1 = input("First expense? ")
 amount1 = float(input("Amount? "))
 # += names subtotal only once and adds one amount per statement
 subtotal += amount1
+# elif chain so an amount only gets ONE message (250 is Huge, not Huge + Big)
+if amount1 > 200:
+    print("  Huge expense - are you sure?")
+elif amount1 > 100:
+    print("  Big expense.")
+elif amount1 > 50:
+    print("  Moderate expense.")
+else:
+    print("  Small expense.")
 
 item2 = input("Second expense? ")
 amount2 = float(input("Amount? "))
 subtotal += amount2
+if amount2 > 200:
+    print("  Huge expense - are you sure?")
+elif amount2 > 100:
+    print("  Big expense.")
+elif amount2 > 50:
+    print("  Moderate expense.")
+else:
+    print("  Small expense.")
+
+# the warning only shows when BOTH are over 100 (exactly 100 doesn't count)
+if amount1 > 100 and amount2 > 100:
+    print("  Two big expenses in a row - slow down!")
 
 # average comes from the subtotal, not from re-adding the amounts
 average = subtotal / 2
@@ -44,7 +65,7 @@ total = subtotal + tax
 budget = float(input("Your budget? "))
 # a comparison gives True or False on its own, no typing it by hand
 over_budget = total > budget
-# stays negative when the total is over the budget (fixed in Module 3)
+# negative when the total is over the budget, so the verdict flips it
 left = budget - total
 
 print()
@@ -57,7 +78,14 @@ print(f"Subtotal:\t${subtotal}")
 print(f"Average:\t${average}")
 print(f"Tax ({tax_percent}%):\t${tax}")
 print(f"Grand total:\t${total}")
-print(f"Over budget?\t{over_budget}")
-print(f"Left in budget:\t${left}")
+
+# exactly one verdict line, and the amount is never negative
+if over_budget:
+    # left is negative here, so -left is the positive amount over
+    print(f"Over budget by ${-left}!")
+elif total > budget * 0.9:
+    print(f"Careful: only ${left} left.")
+else:
+    print(f"Within budget. ${left} left.")
 print("-" * 40)
-print("Made by: Sebastian Paul S. Carlos  |  Installment 3")
+print("Made by: Sebastian Paul S. Carlos  |  Installment 4")
