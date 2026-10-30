@@ -1,91 +1,72 @@
-# Expense Tracker - Installment 4: The Tracker Makes Decisions
+# Expense Tracker - Installment 5: The Menu Comes Alive
 # Author: Sebastian Paul S. Carlos
-# Installment 3 plus size messages for each amount and a budget verdict.
+# Installment 4 plus a working menu that repeats until the user picks Exit.
 
 print("=" * 40)
 print("\tEXPENSE TRACKER")
 print("\tKnow where your money goes")
 print("=" * 40)
 
-print("\n\tMAIN MENU")
-# tabs so the (coming soon) all line up
-print("\t1. Add an expense\t(coming soon)")
-print("\t2. View all expenses\t(coming soon)")
-print("\t3. Show total spent\t(coming soon)")
-print("\t4. Exit\t\t\t(coming soon)")
-
-# input() always gives back text, so name and the items stay as strings
-print()
+# setup is asked once, before the loop, so it never repeats
 name = input("What's your name? ")
-print(f"Welcome, {name}! Let's log two expenses.")
-
-# subtotal starts at 0 and grows right after each amount is read
-subtotal = 0
-
-item1 = input("First expense? ")
-# float() turns the typed text into a number
-amount1 = float(input("Amount? "))
-# += names subtotal only once and adds one amount per statement
-subtotal += amount1
-# elif chain so an amount only gets ONE message (250 is Huge, not Huge + Big)
-if amount1 > 200:
-    print("  Huge expense - are you sure?")
-elif amount1 > 100:
-    print("  Big expense.")
-elif amount1 > 50:
-    print("  Moderate expense.")
-else:
-    print("  Small expense.")
-
-item2 = input("Second expense? ")
-amount2 = float(input("Amount? "))
-subtotal += amount2
-if amount2 > 200:
-    print("  Huge expense - are you sure?")
-elif amount2 > 100:
-    print("  Big expense.")
-elif amount2 > 50:
-    print("  Moderate expense.")
-else:
-    print("  Small expense.")
-
-# the warning only shows when BOTH are over 100 (exactly 100 doesn't count)
-if amount1 > 100 and amount2 > 100:
-    print("  Two big expenses in a row - slow down!")
-
-# average comes from the subtotal, not from re-adding the amounts
-average = subtotal / 2
-
-# the user types 12 for 12%, so the program divides by 100 itself
 tax_percent = float(input("Tax rate %? "))
-# multiply first, then divide, so 12.5 * 12 / 100 gives exactly 1.5
-tax = subtotal * tax_percent / 100
-total = subtotal + tax
-
 budget = float(input("Your budget? "))
-# a comparison gives True or False on its own, no typing it by hand
-over_budget = total > budget
-# negative when the total is over the budget, so the verdict flips it
-left = budget - total
+print(f"Welcome, {name}!")
 
-print()
-print("-" * 40)
-print("SUMMARY")
-# the tab puts every value in the same column
-print(f"  - {item1}:\t${amount1}")
-print(f"  - {item2}:\t${amount2}")
-print(f"Subtotal:\t${subtotal}")
-print(f"Average:\t${average}")
-print(f"Tax ({tax_percent}%):\t${tax}")
-print(f"Grand total:\t${total}")
+# 0.0 so the totals print as 170.0 / 0.0 like the expected output
+subtotal = 0.0
+count = 0
+# choice is text on purpose: "7" or "abc" can never crash a comparison
+choice = ""
 
-# exactly one verdict line, and the amount is never negative
-if over_budget:
-    # left is negative here, so -left is the positive amount over
-    print(f"Over budget by ${-left}!")
-elif total > budget * 0.9:
-    print(f"Careful: only ${left} left.")
-else:
-    print(f"Within budget. ${left} left.")
+# the loop ends only when the user picks 4
+while choice != "4":
+    # the menu is written once here and shows again after every choice
+    print("\nMAIN MENU")
+    print("  [1] Add an expense")
+    print("  [2] View all expenses (coming soon)")
+    print("  [3] Show total spent")
+    print("  [4] Exit")
+    choice = input("Choose 1-4: ")
+
+    if choice == "1":
+        amount = float(input("Amount? "))
+        subtotal += amount
+        count += 1
+        # size check lives only here, as an elif chain so one amount gets one message
+        if amount > 200:
+            print("  Huge expense - are you sure?")
+        elif amount > 100:
+            print("  Big expense.")
+        elif amount > 50:
+            print("  Moderate expense.")
+        else:
+            print("  Small expense.")
+    elif choice == "2":
+        print("  Coming soon: the tracker can't remember each item yet.")
+    elif choice == "3":
+        # tax and total are redone each time, since subtotal keeps growing
+        tax = subtotal * tax_percent / 100
+        total = subtotal + tax
+        over_budget = total > budget
+        left = budget - total
+        # the tab puts every value in the same column
+        print(f"  Expenses:\t{count}")
+        print(f"  Subtotal:\t${subtotal}")
+        print(f"  Tax ({tax_percent}%):\t${tax}")
+        print(f"  Grand total:\t${total}")
+        if over_budget:
+            # left is negative here, so -left is the positive amount over
+            print(f"  Over budget by ${-left}!")
+        elif total > budget * 0.9:
+            print(f"  Careful: only ${left} left.")
+        else:
+            print(f"  Within budget. ${left} left.")
+    elif choice == "4":
+        print(f"Goodbye, {name}!")
+    else:
+        print("  Please choose 1, 2, 3 or 4.")
+
 print("-" * 40)
-print("Made by: Sebastian Paul S. Carlos  |  Installment 4")
+print("Made by: Sebastian Paul S. Carlos  |  Installment 5")
+print("=" * 40)
